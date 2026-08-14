@@ -1,0 +1,337 @@
+/* --- Show/Hide Password Wrapper --- */
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+.password-wrapper input {
+    width: 100%;
+    padding-right: 40px; /* Χώρος για το ματάκι */
+}
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-80%);
+    cursor: pointer;
+    user-select: none;
+}
+
+/* --- Layout 3 Στηλών (Dashboard) --- */
+.dashboard-body {
+    background-color: #050508;
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.app-layout {
+    display: flex;
+    height: 100vh;
+}
+
+/* Πλευρικά Μενού (Αριστερά & Δεξιά) */
+.sidebar {
+    width: 250px;
+    background: #11131e;
+    padding: 20px;
+    border-right: 1px solid #1f2235;
+    display: flex;
+    flex-direction: column;
+}
+.right-sidebar {
+    border-right: none;
+    border-left: 1px solid #1f2235;
+}
+
+.brand {
+    font-size: 24px;
+    font-weight: bold;
+    color: #8b5cf6;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-title {
+    font-size: 11px;
+    color: #4b5563;
+    font-weight: bold;
+    margin: 20px 0 10px 0;
+    letter-spacing: 1px;
+}
+
+.menu-list a {
+    display: block;
+    color: #9ca3af;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    transition: 0.2s;
+}
+
+.menu-list a:hover, .menu-list a.active {
+    background: #181a26;
+    color: #fff;
+    border-left: 3px solid #8b5cf6;
+}
+
+.logout-btn { color: #ef4444 !important; }
+.logout-btn:hover { background: #3f1616 !important; border-left: 3px solid #ef4444 !important;}
+
+/* Κεντρικό Περιεχόμενο */
+.center-content {
+    flex: 1;
+    padding: 40px;
+    background: #0a0b10;
+    overflow-y: auto;
+}
+
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #1f2235;
+}
+
+.top-header h1 { margin: 0; font-size: 22px; color: #fff;}
+
+/* Στατιστικά Κουτιά */
+.stats-grid {
+    display: flex;
+    gap: 20px;
+}
+.stat-box {
+    background: #181a26;
+    padding: 25px;
+    border-radius: 12px;
+    flex: 1;
+    border-top: 4px solid #3b82f6;
+    text-align: center;
+}
+.stat-box h3 { margin: 0 0 10px 0; color: #9ca3af; font-size: 14px;}
+.stat-value { font-size: 32px; font-weight: bold; color: #fff;}
+
+/* Custom Modal */
+.custom-modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #181a26;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    border-top: 4px solid #ef4444;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Διόρθωση χρωμάτων κειμένου */
+#display-username, .nav-brand, .course-card h3, .top-header h1 {
+    color: #22e42ca2 !important;
+}
+
+.course-card p {
+    color: #f5b507 !important;
+}
+
+/* Link για το StudyArc στο μενού */
+.nav-brand {
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.3s;
+}
+.nav-brand:hover {
+    color: #8b5cf6 !important;
+}
+
+
+/* Styling για τις κάρτες μαθημάτων */
+.course-card {
+    background: #11131e;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #1f2235;
+    transition: 0.3s;
+}
+.course-card:hover { border-color: #8b5cf6; }
+
+.course-info h3 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Διάταξη δίπλα-δίπλα */
+.course-meta {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.meta-item {
+    font-size: 14px;
+    color: #9ca3af;
+}
+
+.meta-value {
+    color: #fff;
+    font-weight: bold;
+}
+
+/* Το Πράσινο XP */
+.xp-highlight {
+    color: #10b981;
+    font-weight: 800;
+    font-size: 16px;
+}
+
+/* Όμορφο πεδίο βαθμού */
+.grade-input {
+    width: 80px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid #374151;
+    background: #050508;
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+    font-weight: bold;
+    transition: 0.3s;
+}
+.grade-input:focus {
+    border-color: #10b981;
+    outline: none;
+}
+
+/* Στυλ για τα κουμπιά στο Modal και στις Ρυθμίσεις */
+.btn-danger {
+    background: #ef4444;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    background: #374151;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: #8b5cf6;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: 1px solid #374151;
+    background: #0d0e15;
+    color: white;
+    box-sizing: border-box;
+}
+
+/* --- Καθολική Διόρθωση Χρωμάτων για όλα τα Views --- */
+
+/* Επηρεάζει όλους τους τίτλους μέσα στις κάρτες και τα views */
+.content-view h2, 
+.settings-card h3, 
+.contact-card p, 
+.contact-card h2,
+.settings-card p {
+    color: #ffffff !important;
+}
+
+/* Διόρθωση για τα labels αν υπάρχουν */
+label {
+    color: #ffffff !important;
+}
+
+/* Διασφάλιση ότι το κείμενο μέσα στις κάρτες επικοινωνίας/ρυθμίσεων είναι λευκό */
+.settings-card, .contact-card {
+    color: #ffffff !important;
+}
+
+
+/* --- LEADERBOARD STYLING --- */
+.leaderboard-card {
+    background: #11131e;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid #1f2235;
+    margin-top: 10px;
+}
+
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.leaderboard-table th {
+    color: #4b5563;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #1f2235;
+}
+
+.leaderboard-table td {
+    padding: 15px 0;
+    border-bottom: 1px solid #181a26;
+    vertical-align: middle;
+}
+
+/* Χρώματα Στοιχείων Πίνακα (Λευκό) */
+.rank-badge {
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.student-name {
+    color: #ffffff !important;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.xp-value {
+    color: #10b981 !important; /* Έντονο πράσινο για τα XP */
+    font-weight: bold;
+    font-size: 15px;
+}

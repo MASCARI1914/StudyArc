@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyArc - Dashboard</title>
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/sidebar.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="dashboard-body">
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <div class="app-layout">
+        
+        <aside class="sidebar left-sidebar">
+            <div class="brand" onclick="switchView('stats')" style="cursor: pointer;">StudyArc</div>
+            <ul class="menu-list">
+                <li class="menu-title">ΑΚΑΔΗΜΑΪΚΑ</li>
+                <li><a href="#" onclick="switchView('courses-sem1')" id="nav-courses-sem1">Α' Εξάμηνο</a></li>
+                <li><a href="#" onclick="switchView('courses-sem2')" id="nav-courses-sem2">Β' Εξάμηνο</a></li>
+                <li class="menu-title">ΑΝΤΑΜΟΙΒΕΣ</li>
+                <li><a href="#" onclick="switchView('rewards')" id="nav-rewards">🎁 Δώρα</a></li>
+                <li><a href="#" onclick="switchView('leaderboard')" id="nav-leaderboard">🏆 Κατάταξη</a></li>
+            </ul>
+        </aside>
+
+        <main class="center-content">
+            <header class="top-header">
+                <h1 id="view-title">Σύνοψη Επιδόσεων</h1>
+                <div class="total-xp"><span id="xp-counter">0</span> XP</div>
+            </header>
+
+            <div id="view-stats" class="content-view">
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <h3>Μέσος Όρος</h3>
+                        <div class="stat-value" id="avg-grade">0.0</div>
+                    </div>
+                    <div class="stat-box">
+                        <h3>Περασμένα Μαθήματα</h3>
+                        <div class="stat-value" id="passed-courses">0 / 10</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-courses-sem1" class="content-view" style="display: none;">
+                <div id="sem1-container"></div>
+            </div>
+            <div id="view-courses-sem2" class="content-view" style="display: none;">
+                <div id="sem2-container"></div>
+            </div>
+
+            <div id="view-rewards" class="content-view" style="display: none;">
+                <h2 style="color: #fff !important;">Κατάστημα Δώρων (Σύντομα)</h2>
+            </div>
+
+            <div id="view-leaderboard" class="content-view" style="display: none;">
+                <div class="leaderboard-card">
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Θέση</th>
+                                <th>Φοιτητής (ΑΕΜ)</th>
+                                <th>Συνολικά XP</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboard-body">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="view-settings" class="content-view" style="display: none;">
+                <h2>Ρυθμίσεις Προφίλ</h2>
+                <div class="settings-card">
+                    <input type="password" id="new-password" placeholder="Νέος Κωδικός" class="form-input">
+                    <button onclick="updatePassword()" class="btn-primary">Αλλαγή</button>
+                </div>
+            </div>
+
+            <div id="view-contact" class="content-view" style="display: none;">
+                <h2>Επικοινωνία</h2>
+                <div class="contact-card">
+                    <textarea id="contact-message" placeholder="Το μήνυμά σου..." class="form-input"></textarea>
+                    <button onclick="sendMessage()" class="btn-primary">Αποστολή</button>
+                </div>
+            </div>
+        </main>
+
+        <aside class="sidebar right-sidebar">
+            <div class="user-profile-mini">
+                <div class="profile-icon">👤</div>
+                <div id="display-username">AEM</div>
+            </div>
+            <ul class="menu-list">
+                <li class="menu-title">ΛΟΓΑΡΙΑΣΜΟΣ</li>
+                <li><a href="#" onclick="switchView('settings')" id="nav-settings">Ρυθμίσεις</a></li>
+                <li><a href="#" onclick="switchView('contact')" id="nav-contact">Επικοινωνία</a></li>
+                <li><a href="#" onclick="openLogoutModal()" class="logout-btn">Έξοδος</a></li>
+            </ul>
+        </aside>
+
+    </div>
+
+    <div id="logout-modal" class="custom-modal">
+        <div class="modal-content">
+            <h3>Αποσύνδεση</h3>
+            <p>Είστε σίγουρος ότι θέλετε να βγείτε;</p>
+            <div class="modal-buttons">
+                <button onclick="confirmLogout()" class="btn-danger">Ναι, Έξοδος</button>
+                <button onclick="closeLogoutModal()" class="btn-secondary">Ακύρωση</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../js/layout.js"></script>
+    <script src="../js/courses.js"></script>
+</body>
+</html>

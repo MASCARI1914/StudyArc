@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyArc - Είσοδος</title>
+    <link rel="stylesheet" href="../css/auth.css">
+</head>
+<body class="auth-body">
+    <div class="auth-container">
+        <h1 class="logo">StudyArc</h1>
+        
+        <div id="selection-view">
+            <p class="subtitle">Καλώς ήρθες! Επίλεξε πώς θες να συνεχίσεις:</p>
+            <button onclick="showView('login-view')" class="btn-primary">Έχω Λογαριασμό (Login)</button>
+            <button onclick="showView('register-view')" class="btn-secondary" style="margin-top: 10px;">Δεν έχω Λογαριασμό (Sign Up)</button>
+        </div>
+
+        <div id="login-view" style="display: none;">
+            <p class="subtitle">Σύνδεση με το ΑΕΜ σου</p>
+            <input type="text" id="login-username" placeholder="ΑΕΜ (π.χ. 2020122)" maxlength="7">
+            <div class="password-wrapper">
+                <input type="password" id="login-password" placeholder="Κωδικός">
+                <span class="toggle-password" onclick="togglePassword('login-password')">👁️</span>
+            </div>
+            <button onclick="login()" class="btn-primary">Είσοδος</button>
+            <button onclick="showView('selection-view')" class="btn-text">Πίσω</button>
+        </div>
+
+        <div id="register-view" style="display: none;">
+            <p class="subtitle">Δημιουργία Νέου Λογαριασμού</p>
+            <input type="text" id="register-username" placeholder="ΑΕΜ (Έτος + 3 ψηφία)" maxlength="7">
+            <div class="password-wrapper">
+                <input type="password" id="register-password" placeholder="Δημιούργησε Κωδικό">
+                <span class="toggle-password" onclick="togglePassword('register-password')">👁️</span>
+            </div>
+            <button onclick="register()" class="btn-secondary">Εγγραφή</button>
+            <button onclick="showView('selection-view')" class="btn-text">Πίσω</button>
+        </div>
+
+        <p id="auth-message" class="error-text"></p>
+    </div>
+
+    <script src="../js/auth.js"></script>
+</body>
+</html>

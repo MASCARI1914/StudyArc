@@ -1,0 +1,74 @@
+/* css/layout.css */
+.dashboard-body {
+    background-color: #050508;
+    margin: 0;
+    height: 100vh;
+}
+
+.app-layout {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    background: #2a40bd;
+    padding: 20px;
+}
+
+.center-content {
+    flex: 1;
+    padding: 40px;
+    background: #0a0b10;
+    overflow-y: auto;
+}
+
+/* Γενικά στυλ μενού */
+.menu-list { list-style: none; padding: 0; }
+.menu-title { font-size: 11px; color: #4b5563; font-weight: bold; margin: 20px 0 10px 0; }
+.menu-list a { 
+    display: block; color: #9ca3af; text-decoration: none; padding: 10px 15px; border-radius: 8px; 
+}
+.menu-list a:hover, .menu-list a.active { background: #181a26; color: #fff; border-left: 3px solid #8b5cf6; }
+
+/* --- TOAST NOTIFICATIONS STYLE --- */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999; /* Να είναι πάνω από όλα τα στοιχεία */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.toast {
+    background: #181a26;
+    color: #fff;
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    min-width: 250px;
+    border-left: 4px solid #10b981;
+    animation: slideIn 0.3s ease-out forwards;
+}
+
+/* Διαφορετικό χρώμα για σφάλματα */
+.toast-error {
+    border-left-color: #ef4444;
+}
+
+/* Animations */
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(0.9); }
+}

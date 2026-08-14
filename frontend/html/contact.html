@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyArc - Επικοινωνία</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">StudyArc</div>
+        <ul class="nav-links">
+            <li><a href="dashboard.html">Μαθήματα</a></li>
+            <li><a href="settings.html">Ρυθμίσεις</a></li>
+            <li><a href="contact.html" class="active">Επικοινωνία</a></li>
+            <li><a href="#" onclick="logout()">Έξοδος</a></li>
+        </ul>
+    </nav>
+
+    <div class="app-container">
+        <main>
+            <h2>Επικοινωνία με την Ομάδα</h2>
+            
+            <div class="contact-card">
+                <p>Βρήκες κάποιο bug ή έχεις ιδέα για νέο feature; Στείλε μας μήνυμα.</p>
+                <textarea id="contact-message" placeholder="Περιέγραψε το πρόβλημα ή την ιδέα σου..." rows="6" class="form-input"></textarea>
+                <button onclick="sendMessage()" class="btn-primary">Αποστολή Μηνύματος</button>
+                <p id="contact-feedback" class="success-text" style="display: none;">Το μήνυμά σου στάλθηκε!</p>
+            </div>
+        </main>
+    </div>
+    
+    <script src="../js/app.js"></script>
+</body>
+</html>

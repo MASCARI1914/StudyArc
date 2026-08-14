@@ -1,0 +1,156 @@
+/* =========================================
+   StudyArc - CSS Αποκλειστικά για την Σελίδα Εισόδου (index.html)
+   Αρχείο: css/auth.css
+   ========================================= */
+
+/* 1. Βασικό Background Οθόνης */
+.auth-body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #050508 0%, #11131e 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #f3f4f6;
+}
+
+/* 2. Το Κεντρικό Κουτί (Card) */
+.auth-container {
+    background: #181a26;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    text-align: center;
+    width: 100%;
+    max-width: 380px;
+    border-top: 4px solid #8b5cf6;
+    animation: slideUp 0.5s ease-out;
+}
+
+/* Απαλό Animation Εμφάνισης */
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 3. Λογότυπο και Τίτλοι */
+.auth-container .logo {
+    margin: 0 0 10px 0;
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    /* Gradient Χρώμα στο Κείμενο */
+    background: linear-gradient(90deg, #8b5cf6, #3b82f6);
+   
+    -webkit-text-fill-color: transparent;
+}
+
+.auth-container .subtitle {
+    color: #9ca3af;
+    margin-bottom: 30px;
+    font-size: 14px;
+}
+
+/* 4. Inputs (Πεδία κειμένου) */
+.auth-container input[type="text"],
+.auth-container input[type="password"] {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #2d3748;
+    background: #0d0e15;
+    color: #fff;
+    box-sizing: border-box;
+    font-size: 15px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Εφέ όταν ο χρήστης γράφει στο πεδίο */
+.auth-container input:focus {
+    outline: none;
+    border-color: #8b5cf6;
+    box-shadow: 0 0 8px rgba(139, 92, 246, 0.3);
+}
+
+/* 5. Κουμπί Show/Hide Password (Το "Ματάκι") */
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-80%); /* Προσαρμογή λόγω του margin-bottom του input */
+    cursor: pointer;
+    user-select: none;
+    color: #6b7280;
+    transition: color 0.2s;
+    font-size: 18px;
+}
+
+.toggle-password:hover {
+    color: #d1d5db;
+}
+
+/* 6. Κουμπιά (Buttons) */
+.auth-container button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 12px;
+}
+
+.btn-primary {
+    background: #8b5cf6;
+    color: white;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.btn-primary:hover {
+    background: #7c3aed;
+    transform: translateY(-2px); /* Ανύψωση στο hover */
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+}
+
+.btn-secondary {
+    background: #2d3748;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #4a5568;
+    transform: translateY(-2px);
+}
+
+.btn-text {
+    background: transparent;
+    color: #9ca3af;
+    margin-top: 5px;
+    margin-bottom: 0 !important;
+    box-shadow: none;
+    padding: 10px;
+}
+
+.btn-text:hover {
+    color: #fff;
+    text-decoration: underline;
+    transform: none;
+}
+
+/* 7. Μηνύματα Σφάλματος/Επιτυχίας */
+.error-text {
+    margin-top: 15px;
+    font-size: 13.5px;
+    font-weight: bold;
+    min-height: 20px; /* Κρατάει σταθερό το ύψος για να μην 'χοροπηδάει' το UI */
+}

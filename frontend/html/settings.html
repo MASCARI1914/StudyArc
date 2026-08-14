@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyArc - Ρυθμίσεις</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">StudyArc</div>
+        <ul class="nav-links">
+            <li><a href="dashboard.html">Μαθήματα</a></li>
+            <li><a href="settings.html" class="active">Ρυθμίσεις</a></li>
+            <li><a href="contact.html">Επικοινωνία</a></li>
+            <li><a href="#" onclick="logout()">Έξοδος</a></li>
+        </ul>
+    </nav>
+
+    <div class="app-container">
+        <main>
+            <h2>Ρυθμίσεις Προφίλ</h2>
+            
+            <div class="settings-card">
+                <h3>Αλλαγή Κωδικού</h3>
+                <input type="password" id="new-password" placeholder="Νέος Κωδικός" class="form-input">
+                <input type="password" id="confirm-password" placeholder="Επιβεβαίωση Κωδικού" class="form-input">
+                <button onclick="updatePassword()" class="btn-primary">Αποθήκευση Κωδικού</button>
+            </div>
+
+            <div class="settings-card danger-zone">
+                <h3>Επικίνδυνη Ζώνη</h3>
+                <p>Αν διαγράψεις τον λογαριασμό σου, τα XP και τα στατιστικά σου θα χαθούν οριστικά.</p>
+                <button onclick="deleteAccount()" class="btn-danger">Διαγραφή Λογαριασμού</button>
+            </div>
+        </main>
+    </div>
+    
+    <script src="../js/app.js"></script>
+</body>
+</html>
