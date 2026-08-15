@@ -67,6 +67,7 @@ class StoreItem(Base):
     title = Column(String, nullable=False)
     tokens_required = Column(Integer, nullable=False)
     description = Column(String, nullable=True)
+    min_level = Column(Integer, default=1)
 
 class UserReward(Base):
     __tablename__ = "user_rewards"
@@ -288,8 +289,9 @@ def get_leaderboard(db: Session = Depends(get_db)):
     return [{"rank": r, "username": u.username, "level": u.level, "total_xp": u.total_xp} for r, u in enumerate(users, start=1)]
 
 @app.get("/store/items")
-def get_store_items(db: Session = Depends(get_db)): 
-    return db.query(StoreItem).order_by(StoreItem.tokens_required.asc()).all()
+def get_store_items(db: Session = Depends(get_db)):
+    items = db.query(StoreItem).order_by(StoreItem.min_level.asc(), StoreItem.tokens_required.asc()).all()
+    return items
 
 @app.post("/store/claim")
 def claim_reward(data: ClaimReward, db: Session = Depends(get_db)):

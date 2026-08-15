@@ -5,6 +5,7 @@ const API_URL = "http://127.0.0.1:8000";
 
 export default function Dashboard({ user, onLogout }) {
   const [activeTab, setActiveTab] = useState('home'); 
+  const [storeYearFilter, setStoreYearFilter] = useState(1);
   const [dbData, setDbData] = useState(null);
   const [leaders, setLeaders] = useState([]);
   const [storeItems, setStoreItems] = useState([]); 
@@ -13,6 +14,8 @@ export default function Dashboard({ user, onLogout }) {
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   const currentUsername = user?.username || "Φοιτητής";
+  const userLevel = dbData?.user?.level || 1;
+  const userTokens = dbData?.user?.tokens || 0;
 
   const showToast = (msg, isErr = false) => {
     setToast({ show: true, message: msg, isError: isErr });
@@ -27,7 +30,7 @@ export default function Dashboard({ user, onLogout }) {
       setDbData(response.data);
       setLoading(false);
     } catch (error) {
-      console.error("Σφάλμα φόρτωσης Dashboard:", error);
+      console.error(error);
       setLoading(false);
     }
   };
@@ -36,18 +39,14 @@ export default function Dashboard({ user, onLogout }) {
     try {
       const response = await axios.get(`${API_URL}/leaderboard`);
       setLeaders(response.data);
-    } catch (error) { 
-      console.error("Σφάλμα φόρτωσης Leaderboard:", error); 
-    }
+    } catch (error) { console.error(error); }
   };
 
   const fetchStoreItems = async () => {
     try {
       const response = await axios.get(`${API_URL}/store/items`);
       setStoreItems(response.data);
-    } catch (error) { 
-      console.error("Σφάλμα φόρτωσης Store Items:", error); 
-    }
+    } catch (error) { console.error(error); }
   };
 
   useEffect(() => {
@@ -58,9 +57,12 @@ export default function Dashboard({ user, onLogout }) {
     }
   }, [user]);
 
-  const handleClaimReward = async (itemId, tokensRequired, itemTitle) => {
-    const currentTokens = dbData?.user?.tokens || 0;
-    if (currentTokens < tokensRequired) {
+  const handleClaimReward = async (itemId, tokensRequired, itemTitle, minLevel) => {
+    if (userLevel < minLevel) {
+      showToast(`🔒 Απαιτείται Level ${minLevel} για το δώρο "${itemTitle}"!`, true);
+      return;
+    }
+    if (userTokens < tokensRequired) {
       showToast(`❌ Χρειάζεστε ${tokensRequired} Tokens για το δώρο "${itemTitle}"!`, true);
       return;
     }
@@ -85,7 +87,6 @@ export default function Dashboard({ user, onLogout }) {
 
   const passedCoursesCount = dbData?.courses?.filter(c => c.grade >= 5).length || 0;
 
-  // 🔄 Χαρτογράφηση activeTab σε αριθμό εξαμήνου (1 έως 9)
   const getSemesterNumber = () => {
     if (activeTab.startsWith('semester_')) {
       return parseInt(activeTab.split('_')[1], 10);
@@ -107,6 +108,16 @@ export default function Dashboard({ user, onLogout }) {
     8: "🛡️ ΜΑΘΗΜΑΤΑ Η' ΕΞΑΜΗΝΟΥ",
     9: "🤖 ΜΑΘΗΜΑΤΑ Θ' ΕΞΑΜΗΝΟΥ"
   };
+
+  const yearNames = {
+    1: "1ο Έτος (Freshman - Lvl 1)",
+    2: "2ο Έτος (Sophomore - Lvl 2)",
+    3: "3ο Έτος (Junior - Lvl 3)",
+    4: "4ο Έτος (Senior - Lvl 4)",
+    5: "5ο Έτος (Graduate - Lvl 5)"
+  };
+
+  const filteredStoreItems = storeItems.filter(item => (item.min_level || 1) === storeYearFilter);
 
   return (
     <div className="flex min-h-screen bg-black text-white font-sans">
@@ -147,7 +158,7 @@ export default function Dashboard({ user, onLogout }) {
             <div>
               <p className="text-[11px] font-bold text-zinc-500 uppercase tracking-widest mb-3">Ανταμοιβές</p>
               <div className="space-y-1">
-                <button onClick={() => setActiveTab('store')} className={`w-full text-left p-2.5 rounded-xl font-semibold text-xs transition-all border-none cursor-pointer flex items-center ${activeTab === 'store' ? 'bg-purple-500/10 text-purple-400 border-l-4 border-purple-500' : 'text-zinc-400 hover:bg-zinc-800/40 hover:text-white'}`}>🎁 Κατάστημα</button>
+                <button onClick={() => setActiveTab('store')} className={`w-full text-left p-2.5 rounded-xl font-semibold text-xs transition-all border-none cursor-pointer flex items-center ${activeTab === 'store' ? 'bg-purple-500/10 text-purple-400 border-l-4 border-purple-500' : 'text-zinc-400 hover:bg-zinc-800/40 hover:text-white'}`}>🎁 Κατάστημα (50 Δώρα)</button>
                 <button onClick={() => setActiveTab('leaderboard')} className={`w-full text-left p-2.5 rounded-xl font-semibold text-xs transition-all border-none cursor-pointer flex items-center ${activeTab === 'leaderboard' ? 'bg-purple-500/10 text-purple-400 border-l-4 border-purple-500' : 'text-zinc-400 hover:bg-zinc-800/40 hover:text-white'}`}>🏆 Κατάταξη</button>
               </div>
             </div>
@@ -166,12 +177,12 @@ export default function Dashboard({ user, onLogout }) {
               <p className="text-2xl font-black text-blue-400 mt-0.5">{dbData?.gpa || "0.0"}</p>
             </div>
             <div className="text-center bg-purple-500/10 px-5 py-2 rounded-xl border border-purple-500/20">
-              <p className="text-xs text-purple-400 font-bold uppercase tracking-wider">Επίπεδο</p>
-              <p className="text-2xl font-black text-white mt-0.5">Lvl {dbData?.user?.level || 1}</p>
+              <p className="text-xs text-purple-400 font-bold uppercase tracking-wider">Επίπεδο (Max 5)</p>
+              <p className="text-2xl font-black text-white mt-0.5">Lvl {userLevel}</p>
             </div>
             <div className="text-center bg-zinc-950 px-4 py-2 rounded-xl border border-zinc-800">
               <p className="text-xs text-zinc-500 font-bold uppercase tracking-wider">Arcade Tokens</p>
-              <p className="text-2xl font-black text-yellow-500 mt-0.5">{dbData?.user?.tokens || 0} 🪙</p>
+              <p className="text-2xl font-black text-yellow-500 mt-0.5">{userTokens} 🪙</p>
             </div>
           </div>
           <div className="flex items-center gap-3 bg-zinc-950 px-4 py-2.5 rounded-xl border border-zinc-800 shadow-md">
@@ -204,44 +215,72 @@ export default function Dashboard({ user, onLogout }) {
             </div>
           </div>
         ) : activeTab === 'store' ? (
-          <div className="space-y-6">
-            <div className="flex justify-between items-center select-none bg-zinc-900 p-6 rounded-2xl border border-zinc-800 shadow-md">
+          <div className="space-y-8">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-zinc-900 p-6 rounded-2xl border border-zinc-800 shadow-md select-none">
               <div>
-                <h3 className="text-2xl font-black text-white">🎁 Arcade Κατάστημα Ανταμοιβών</h3>
-                <p className="text-xs text-zinc-400 mt-1">Εξαργυρώστε τα Tokens σας σε πραγματικά κουπόνια, χορηγίες και tech prizes!</p>
+                <h3 className="text-2xl font-black text-white">🎁 Arcade Store (50 Δώρα)</h3>
+                <p className="text-xs text-zinc-400 mt-1">10 Δώρα ανά Ακαδημαϊκό Έτος. Ξεκλειδώστε τα με βάση το Level και τα Tokens σας!</p>
               </div>
-              <div className="bg-yellow-500/10 border border-yellow-500/20 px-4 py-2.5 rounded-xl text-yellow-500 font-bold text-sm">
-                Διαθέσιμα: <span className="font-mono text-base">{dbData?.user?.tokens || 0}</span> 🪙
+              <div className="bg-yellow-500/10 border border-yellow-500/20 px-5 py-2.5 rounded-xl text-yellow-500 font-black text-sm">
+                Διαθέσιμα: <span className="font-mono text-lg">{userTokens}</span> 🪙
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {storeItems.map((item) => {
-                const currentTokens = dbData?.user?.tokens || 0;
-                const claimStatus = dbData?.claims ? dbData.claims[item.id] : undefined;
+            {/* YEAR TABS */}
+            <div className="flex gap-2 overflow-x-auto pb-2 select-none">
+              {[1, 2, 3, 4, 5].map((year) => {
+                const isLocked = userLevel < year;
+                return (
+                  <button
+                    key={year}
+                    onClick={() => setStoreYearFilter(year)}
+                    className={`px-4 py-2.5 rounded-xl font-bold text-xs transition-all border cursor-pointer whitespace-nowrap flex items-center gap-2 ${
+                      storeYearFilter === year
+                        ? 'bg-purple-600 border-purple-500 text-white shadow-lg'
+                        : isLocked
+                        ? 'bg-zinc-950/60 border-zinc-800/60 text-zinc-500 hover:text-zinc-300'
+                        : 'bg-zinc-900 border-zinc-800 text-zinc-300 hover:bg-zinc-800'
+                    }`}
+                  >
+                    {isLocked ? '🔒' : '⭐'} {yearNames[year]}
+                  </button>
+                );
+              })}
+            </div>
 
-                // Δυναμικός υπολογισμός Tier Badge βάσει των Tiers της τεκμηρίωσης
-                let tierBadge = { name: "Tier 1: Daily Boost", color: "text-blue-400 bg-blue-500/10 border-blue-500/20" };
-                if (item.tokens_required >= 1000) {
-                  tierBadge = { name: "👑 Tier 4: Graduation Grand Prize", color: "text-amber-400 bg-amber-500/10 border-amber-500/30 font-black" };
-                } else if (item.tokens_required >= 100) {
-                  tierBadge = { name: "⚡ Tier 3: Tech & Lifestyle", color: "text-purple-400 bg-purple-500/10 border-purple-500/20" };
-                } else if (item.tokens_required >= 25) {
-                  tierBadge = { name: "🍔 Tier 2: Student Meal", color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20" };
+            {/* GIFTS GRID */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {filteredStoreItems.map((item, index) => {
+                const claimStatus = dbData?.claims ? dbData.claims[item.id] : undefined;
+                const minReqLevel = item.min_level || 1;
+                const isLevelLocked = userLevel < minReqLevel;
+                const isTokenShort = userTokens < item.tokens_required;
+
+                let rarityBadge = { name: "Common", color: "text-zinc-400 bg-zinc-800/60 border-zinc-700" };
+                if (index === 9) {
+                  rarityBadge = { name: "👑 Legendary Top Prize", color: "text-amber-400 bg-amber-500/10 border-amber-500/40 font-black" };
+                } else if (index >= 7) {
+                  rarityBadge = { name: "⚡ Epic Reward", color: "text-purple-400 bg-purple-500/10 border-purple-500/20 font-bold" };
+                } else if (index >= 3) {
+                  rarityBadge = { name: "🔹 Rare", color: "text-blue-400 bg-blue-500/10 border-blue-500/20 font-bold" };
                 }
 
                 return (
-                  <div key={item.id} className="bg-zinc-900 p-6 rounded-2xl border border-zinc-800 flex flex-col justify-between shadow-md hover:border-zinc-700 transition-all">
+                  <div key={item.id} className={`bg-zinc-900 p-6 rounded-2xl border flex flex-col justify-between shadow-md transition-all ${isLevelLocked ? 'border-zinc-800/40 opacity-75' : 'border-zinc-800 hover:border-zinc-700'}`}>
                     <div>
                       <div className="flex justify-between items-center select-none mb-3">
-                        <span className={`text-[10px] uppercase tracking-wider font-bold px-2.5 py-1 rounded-lg border ${tierBadge.color}`}>
-                          {tierBadge.name}
+                        <span className={`text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg border ${rarityBadge.color}`}>
+                          {rarityBadge.name}
                         </span>
-                        {claimStatus && (
+                        {claimStatus ? (
                           <span className={`text-xs font-bold px-2.5 py-0.5 rounded-md ${claimStatus === "Approved" ? 'bg-emerald-500/20 text-emerald-400' : 'bg-yellow-500/20 text-yellow-400'}`}>
                             {claimStatus === "Approved" ? "✨ Εγκρίθηκε!" : "⏳ Σε αναμονή..."}
                           </span>
-                        )}
+                        ) : isLevelLocked ? (
+                          <span className="text-[11px] font-bold text-red-400 bg-red-500/10 px-2 py-0.5 rounded border border-red-500/20">
+                            🔒 Απαιτεί Level {minReqLevel}
+                          </span>
+                        ) : null}
                       </div>
                       
                       <h4 className="text-lg font-black text-white">{item.title}</h4>
@@ -253,11 +292,27 @@ export default function Dashboard({ user, onLogout }) {
                         {item.tokens_required} Tokens 🪙
                       </span>
                       <button 
-                        disabled={claimStatus !== undefined || currentTokens < item.tokens_required}
-                        onClick={() => handleClaimReward(item.id, item.tokens_required, item.title)}
-                        className={`px-5 py-2.5 rounded-xl text-xs font-bold border-none cursor-pointer transition-all ${claimStatus ? 'bg-zinc-950 text-zinc-600 cursor-not-allowed' : currentTokens >= item.tokens_required ? 'bg-purple-600 hover:bg-purple-700 text-white shadow-lg' : 'bg-zinc-800 text-zinc-500 cursor-not-allowed'}`}
+                        disabled={claimStatus !== undefined || isLevelLocked || isTokenShort}
+                        onClick={() => handleClaimReward(item.id, item.tokens_required, item.title, minReqLevel)}
+                        className={`px-5 py-2.5 rounded-xl text-xs font-bold border-none cursor-pointer transition-all ${
+                          claimStatus 
+                            ? 'bg-zinc-950 text-zinc-600 cursor-not-allowed' 
+                            : isLevelLocked
+                            ? 'bg-zinc-950 text-zinc-600 border border-zinc-800 cursor-not-allowed'
+                            : isTokenShort
+                            ? 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
+                            : 'bg-purple-600 hover:bg-purple-700 text-white shadow-lg'
+                        }`}
                       >
-                        {claimStatus === "Approved" ? "🔒 Εξαργυρώθηκε" : claimStatus === "Pending" ? "⏳ Σε αναμονή έγκρισης" : currentTokens >= item.tokens_required ? "🎁 Εξαργύρωση" : `🔒 Λείπουν ${item.tokens_required - currentTokens} 🪙`}
+                        {claimStatus === "Approved" 
+                          ? "🔒 Εξαργυρώθηκε" 
+                          : claimStatus === "Pending" 
+                          ? "⏳ Σε αναμονή..." 
+                          : isLevelLocked 
+                          ? `🔒 Κλειδωμένο (Lvl ${minReqLevel})` 
+                          : isTokenShort 
+                          ? `🔒 Λείπουν ${item.tokens_required - userTokens} 🪙` 
+                          : "🎁 Εξαργύρωση"}
                       </button>
                     </div>
                   </div>
