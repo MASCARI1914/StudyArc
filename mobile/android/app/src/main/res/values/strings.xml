@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">StudyArc</string>
+    <string name="title_activity_main">StudyArc</string>
+    <string name="package_name">com.studyarc.app</string>
+    <string name="custom_url_scheme">com.studyarc.app</string>
+</resources>

@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@theme {
+  --color-darkBg: #050508;
+  --color-darkCard: #181a26;
+  --color-darkPanel: #11131e;
+  --color-darkInput: #0d0e15;
+  --color-brandPurple: #8b5cf6;
+  --color-brandPurpleHover: #7c3aed;
+  --color-brandBlue: #3b82f6;
+  --color-successGreen: #10b981;
+  --color-dangerRed: #ef4444;
+}
+
+body {
+  margin: 0;
+  background-color: #050508;
+  color: #f3f4f6;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
